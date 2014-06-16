@@ -26,7 +26,10 @@ class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token, :timeout_in_minutes,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch,
-    :email_recipients, :email_add_committer, :email_only_broken_builds
+    :email_recipients, :email_add_committer, :email_only_broken_builds,
+    :slack_only_broken_builds, :slack_notification_channel,
+    :slack_notification_subdomain, :slack_notification_token,
+    :slack_notification_username
 
   has_many :builds, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
@@ -154,6 +157,13 @@ ls -la
 
   def email_notification?
     email_add_committer || email_recipients.present?
+  end
+
+  def slack_notification?
+    slack_notification_channel.present? &&
+    slack_notification_subdomain.present? &&
+    slack_notification_token.present? &&
+    slack_notification_username.present?
   end
 
   def web_hooks?

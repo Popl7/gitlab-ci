@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140506091853) do
+ActiveRecord::Schema.define(version: 20140616190022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,23 +36,28 @@ ActiveRecord::Schema.define(version: 20140506091853) do
   add_index "builds", ["runner_id"], name: "index_builds_on_runner_id", using: :btree
 
   create_table "projects", force: true do |t|
-    t.string   "name",                                     null: false
-    t.integer  "timeout",                  default: 1800,  null: false
-    t.text     "scripts",                                  null: false
+    t.string   "name",                                                    null: false
+    t.integer  "timeout",                                 default: 1800,  null: false
+    t.text     "scripts",                                                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "token"
     t.string   "default_ref"
     t.string   "gitlab_url"
-    t.boolean  "always_build",             default: false, null: false
+    t.boolean  "always_build",                            default: false, null: false
     t.integer  "polling_interval"
-    t.boolean  "public",                   default: false, null: false
+    t.boolean  "public",                                  default: false, null: false
     t.string   "ssh_url_to_repo"
     t.integer  "gitlab_id"
-    t.boolean  "allow_git_fetch",          default: true,  null: false
-    t.string   "email_recipients",         default: "",    null: false
-    t.boolean  "email_add_committer",      default: true,  null: false
-    t.boolean  "email_only_broken_builds", default: true,  null: false
+    t.boolean  "allow_git_fetch",                         default: true,  null: false
+    t.string   "email_recipients",                        default: "",    null: false
+    t.boolean  "email_add_committer",                     default: true,  null: false
+    t.boolean  "email_only_broken_builds",                default: true,  null: false
+    t.boolean  "slack_only_broken_builds"
+    t.string   "slack_notification_channel",   limit: 16
+    t.string   "slack_notification_subdomain", limit: 16
+    t.string   "slack_notification_token",     limit: 32
+    t.string   "slack_notification_username",  limit: 16
   end
 
   create_table "runner_projects", force: true do |t|

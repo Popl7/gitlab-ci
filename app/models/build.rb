@@ -88,6 +88,12 @@ class Build < ActiveRecord::Base
           NotificationService.new.build_ended(build)
         end
       end
+
+      if project.slack_notification?
+        if build.status.to_sym == :failed || !project.slack_only_broken_builds
+          SlackNotificationService.new.build_ended(build)
+        end
+      end
     end
 
     state :pending, value: 'pending'
