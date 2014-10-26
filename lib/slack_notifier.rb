@@ -5,11 +5,11 @@ module Slack
   class Notifier
     class << self
       def build_fail_slack_post(build)
-        post("#{slack_text(build)} failed")
+        post(build, "#{slack_text(build)} failed")
       end
 
       def build_success_slack_post(build)
-        post("#{slack_text(build)} passed")
+        post(build, "#{slack_text(build)} passed")
       end
 
       def slack_text(build)
@@ -27,7 +27,7 @@ module Slack
           subdomain: project.slack_notification_subdomain,
           token:     project.slack_notification_token,
           username:  project.slack_notification_username)
-        Slack::Post.post str, slack_notification_channel
+        Slack::Post.post slack_string, project.slack_notification_channel
       end
     end
   end
